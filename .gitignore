@@ -113,3 +113,5 @@ out
 .yarn/install-state.gz
 .pnp.*
 
+# Ignore node_modules
+node_modules/
