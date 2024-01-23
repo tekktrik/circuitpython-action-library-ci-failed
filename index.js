@@ -7,6 +7,9 @@ async function run() {
 
   const repo = github.context.payload.repository;
   const workflow_run = github.context.payload.workflow_run;
+  core.warning(typeof workflow_run)
+  core.warning(typeof workflow_run.pull_requests)
+  core.warning(typeof workflow_run.pull_requests[0])
   const issue = workflow_run.pull_requests[0];
 
   // Use a reaction to track if we've replied already. 201 is returned
@@ -14,7 +17,7 @@ async function run() {
   // us from having to look through all of the existing comments.
 
   try {
-    const result = await octokit.reactions.createForIssue({
+    const result = await octokit.rest.reactions.createForIssue({
         issue_number: issue.number,
         owner: repo.owner.login,
         repo: repo.name,
@@ -22,7 +25,7 @@ async function run() {
     });
 
     if (result.status == 201) {
-      octokit.issues.createComment({
+      octokit.rest.issues.createComment({
         issue_number: issue.number,
         owner: repo.owner.login,
         repo: repo.name,
